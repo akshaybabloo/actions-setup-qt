@@ -1,0 +1,16 @@
+name: 'actions-setup-qt'
+description: 'Setup Qt for GitHub Actions'
+author: 'Akshay Raj Gollahalli'
+inputs:
+  username:
+    description: 'Qt Account Username'
+    required: true
+  password:
+    description: 'Qt Account Password'
+    required: true
+  version:
+    description: 'Qt Version to install (e.g. 5.15.2, 6.2.4, etc.)'
+    required: true
+runs:
+  using: 'node20'
+  main: 'dist/index.js'

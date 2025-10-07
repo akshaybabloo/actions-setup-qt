@@ -1,0 +1,17 @@
+name: CI
+
+on: [push, pull_request, workflow_dispatch]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Test Setup Qt Action
+        uses: ./
+        with:
+          username: ${{ secrets.QT_USERNAME }}
+          password: ${{ secrets.QT_PASSWORD }}
+          version: '5.15.2'

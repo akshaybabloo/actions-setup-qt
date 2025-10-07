@@ -1,0 +1,37 @@
+{
+	"name": "actions-setup-qt",
+	"version": "1.0.0",
+	"description": "Setup Qt for GitHub Actions",
+	"keywords": [
+		"GithHub",
+		"Actions",
+		"Qt"
+	],
+	"homepage": "https://github.com/akshaybabloo/actions-setup-qt#readme",
+	"bugs": {
+		"url": "https://github.com/akshaybabloo/actions-setup-qt/issues"
+	},
+	"repository": {
+		"type": "git",
+		"url": "git+https://github.com/akshaybabloo/actions-setup-qt.git"
+	},
+	"license": "MIT",
+	"type": "module",
+	"author": "Akshay Raj Gollahalli <akshay@gollahalli.com>",
+	"main": "dist/index.js",
+	"scripts": {
+		"test": "echo \"Error: no test specified\" && exit 1",
+		"build": "ncc build src/index.ts -m -o dist",
+		"fmt": "biome format --write"
+	},
+	"devDependencies": {
+		"@biomejs/biome": "2.2.5",
+		"@types/node": "^24.7.0",
+		"@vercel/ncc": "^0.38.4",
+		"typescript": "^5.9.3"
+	},
+	"dependencies": {
+		"@actions/core": "^1.11.1",
+		"@actions/tool-cache": "^2.0.2"
+	}
+}
