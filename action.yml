@@ -9,8 +9,16 @@ inputs:
     description: 'Qt Account Password'
     required: true
   version:
-    description: 'Qt Version to install (e.g. 5.15.2, 6.2.4, etc.)'
-    required: true
+    description: 'Qt Version to install (e.g. qt6.10.0-full-dev)'
+    required: false
+    default: 'qt6.10.0-full-dev'
+  compiler:
+    description: 'Compiler to use (e.g. msvc2022_64, gcc_64, macos). If not specified, will auto-detect based on platform.'
+    required: false
+  install-deps:
+    description: 'Install platform-specific dependencies (true/false)'
+    required: false
+    default: 'false'
 runs:
   using: 'node20'
   main: 'dist/index.js'

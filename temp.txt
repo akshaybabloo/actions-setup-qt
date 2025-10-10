@@ -1,0 +1,47 @@
+Create a setup content in setup-qt.ts file to setup qt environment for windows, macos and linux using the following online installer, you need to download them first.
+
+- For windows x64 use https://download.qt.io/official_releases/online_installers/qt-online-installer-windows-x64-online.exe
+- For windows arm use https://download.qt.io/official_releases/online_installers/qt-online-installer-windows-arm64-online.exe
+- For macos use https://download.qt.io/official_releases/online_installers/qt-online-installer-mac-x64-online.dmg (
+    dont forget to mount it first and use /Volumes/qt-unified-macOS-x64-[Qt Online Installer version]-online/qt-unified-macOS-x64-[Qt Online Installer version]-online.app/Contents/MacOS/qt-unified-macOS-x64-[Qt Online Installer version]-online
+    to run the installer)
+- For linux x64 use https://download.qt.io/official_releases/online_installers/qt-online-installer-linux-x64-online.run
+- For linux arm use https://download.qt.io/official_releases/online_installers/qt-online-installer-linux-arm64-online.run
+
+
+Each of these installers should be run with the following parameters - "install qt6.10.0-full-dev --email <username> --password <password> --root $HOME/Qt --accept-licenses --default-answer --confirm-command
+
+Don't forget to export PATH=$HOME/Qt/<version>/<compiler>/bin:$PATH after installation.
+
+Don't forget to cache it after installation.
+
+1. Linux (arm and x64 needs) these libraries - libfontconfig1-dev \
+    libfreetype-dev \
+    libgtk-3-dev \
+    libx11-dev \
+    libx11-xcb-dev \
+    libxcb-cursor-dev \
+    libxcb-glx0-dev \
+    libxcb-icccm4-dev \
+    libxcb-image0-dev \
+    libxcb-keysyms1-dev \
+    libxcb-randr0-dev \
+    libxcb-render-util0-dev \
+    libxcb-shape0-dev \
+    libxcb-shm0-dev \
+    libxcb-sync-dev \
+    libxcb-util-dev \
+    libxcb-xfixes0-dev \
+    libxcb-xkb-dev \
+    libxcb1-dev \
+    libxext-dev \
+    libxfixes-dev \
+    libxi-dev \
+    libxkbcommon-dev \
+    libxkbcommon-x11-dev \
+    libxrender-dev
+
+2. Macos (x64 needs) these libraries - xcode
+3. Windows (x64 and arm needs) these libraries - you can use this to set up - TheMrMilchmann/setup-msvc-dev@v4
+
+only install the dependiencies if install-deps: "true"

@@ -3,15 +3,62 @@ name: CI
 on: [push, pull_request, workflow_dispatch]
 
 jobs:
-  test:
-    runs-on: ubuntu-latest
+  # test-linux:
+  #   runs-on: ubuntu-latest
+  #   steps:
+  #     - name: Checkout repository
+  #       uses: actions/checkout@v4
+
+  #     - name: Test Setup Qt Action
+  #       uses: ./
+  #       with:
+  #         username: ${{ secrets.QT_USERNAME }}
+  #         password: ${{ secrets.QT_PASSWORD }}
+  #         version: 'qt6.10.0-full-dev'
+          
+  #     - name: Verify Qt installation
+  #       run: |
+  #         qmake --version
+  #         which qmake
+
+  # test-macos:
+  #   runs-on: macos-latest
+  #   steps:
+  #     - name: Checkout repository
+  #       uses: actions/checkout@v4
+
+  #     - name: Test Setup Qt Action
+  #       uses: ./
+  #       with:
+  #         username: ${{ secrets.QT_USERNAME }}
+  #         password: ${{ secrets.QT_PASSWORD }}
+  #         version: 'qt6.10.0-full-dev'
+  #         install-deps: 'true'
+          
+  #     - name: Verify Qt installation
+  #       run: |
+  #         qmake --version
+  #         which qmake
+
+  test-windows:
+    runs-on: windows-latest
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
+        
+      - name: Setup MSVC
+        uses: TheMrMilchmann/setup-msvc-dev@v4
+        with:
+          arch: x64
 
       - name: Test Setup Qt Action
         uses: ./
         with:
           username: ${{ secrets.QT_USERNAME }}
           password: ${{ secrets.QT_PASSWORD }}
-          version: '5.15.2'
+          version: 'qt6.10.0-full-dev'
+          
+      - name: Verify Qt installation
+        run: |
+          qmake --version
+          where qmake
