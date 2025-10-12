@@ -14,8 +14,6 @@ async function run(): Promise<void> {
 		
 		// Run the Qt setup
 		await setupQt(username, password, qtVersion, compiler || undefined, installDeps)
-		
-		info("Qt setup completed successfully!")
 	} catch (error) {
 		if (error instanceof Error) {
 			setFailed(error.message)
