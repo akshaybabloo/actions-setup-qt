@@ -85,7 +85,11 @@ async function setupDependencies() {
  * Get the default compiler for Linux
  */
 function getDefaultCompiler() {
-    return "gcc_64"; // or "gcc_arm64" for ARM
+    const arch = process.arch;
+    if (arch === "arm64") {
+        return "gcc_arm64";
+    }
+    return "gcc_64";
 }
 /**
  * Prepare the installer for execution on Linux

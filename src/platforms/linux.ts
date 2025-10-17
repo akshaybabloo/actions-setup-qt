@@ -76,7 +76,13 @@ export async function setupDependencies(): Promise<void> {
  * Get the default compiler for Linux
  */
 export function getDefaultCompiler(): string {
-	return "gcc_64" // or "gcc_arm64" for ARM
+	const arch = process.arch
+	
+	if (arch === "arm64") {
+		return "gcc_arm64"
+	}
+	
+	return "gcc_64"
 }
 
 /**
