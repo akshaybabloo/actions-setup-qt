@@ -14,7 +14,7 @@ jobs:
   #       with:
   #         username: ${{ secrets.QT_USERNAME }}
   #         password: ${{ secrets.QT_PASSWORD }}
-  #         version: 'qt6.10.0-full-dev'
+  #         version: 'qt6.10.0-full'
           
   #     - name: Verify Qt installation
   #       run: |
@@ -32,7 +32,7 @@ jobs:
   #       with:
   #         username: ${{ secrets.QT_USERNAME }}
   #         password: ${{ secrets.QT_PASSWORD }}
-  #         version: 'qt6.10.0-full-dev'
+  #         version: 'qt6.10.0-full'
           
   #     - name: Verify Qt installation
   #       run: |
@@ -50,7 +50,7 @@ jobs:
   #       with:
   #         username: ${{ secrets.QT_USERNAME }}
   #         password: ${{ secrets.QT_PASSWORD }}
-  #         version: 'qt6.10.0-full-dev'
+  #         version: 'qt6.10.0-full'
   #         install-deps: 'true'
           
   #     - name: Verify Qt installation
@@ -97,14 +97,14 @@ jobs:
   #       with:
   #         username: ${{ secrets.QT_USERNAME }}
   #         password: ${{ secrets.QT_PASSWORD }}
-  #         version: 'qt.qt6.6100.win64_mingw_64'
+  #         version: 'qt6.10.0-full'
           
   #     - name: Verify Qt installation
   #       run: |
   #         qmake --version
   #         where qmake
 
-  test-windows-mingw_arm64:
+  test-windows-msvc2022_64:
     runs-on: windows-11-arm
     steps:
       - name: Checkout repository

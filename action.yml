@@ -19,6 +19,10 @@ inputs:
     description: 'Install platform-specific dependencies (true/false)'
     required: false
     default: 'false'
+  cache:
+    description: 'Enable caching of Qt installation (true/false)'
+    required: false
+    default: 'true'
 runs:
   using: 'node20'
   main: 'dist/index.js'

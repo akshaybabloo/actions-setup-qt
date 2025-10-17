@@ -120,6 +120,7 @@ export async function setupQt(
 	qtVersion = "qt6.10.0-full-dev",
 	compiler?: string,
 	installDeps = false,
+	enableCache = true,
 ): Promise<void> {
 	try {
 		info("Starting Qt setup...")
@@ -142,7 +143,12 @@ export async function setupQt(
 		info(`Cache key: ${cacheKey}`)
 		
 		// Try to restore from cache
-		const cacheRestored = await restoreCache([qtRoot], cacheKey)
+		let cacheRestored = false
+		if (enableCache) {
+			cacheRestored = (await restoreCache([qtRoot], cacheKey)) !== undefined
+		} else {
+			info("Cache is disabled, skipping cache restoration")
+		}
 		
 		if (cacheRestored) {
 			info("Qt installation restored from cache")
@@ -180,13 +186,17 @@ export async function setupQt(
 			}
 			
 			// Save to cache
-			try {
-				info("Saving Qt installation to cache...")
-				await saveCache([qtRoot], cacheKey)
-				info("Qt installation cached successfully")
-			} catch (err) {
-				logError(`Failed to cache Qt installation: ${err}`)
-				// Don't fail the action if caching fails
+			if (enableCache) {
+				try {
+					info("Saving Qt installation to cache...")
+					await saveCache([qtRoot], cacheKey)
+					info("Qt installation cached successfully")
+				} catch (err) {
+					logError(`Failed to cache Qt installation: ${err}`)
+					// Don't fail the action if caching fails
+				}
+			} else {
+				info("Cache is disabled, skipping cache save")
 			}
 		}
 		

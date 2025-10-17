@@ -9,11 +9,12 @@ async function run(): Promise<void> {
 		const qtVersion = getInput("version") || "qt6.10.0-full-dev"
 		const compiler = getInput("compiler") // Optional compiler specification
 		const installDeps = getInput("install-deps") === "true"
+		const enableCache = getInput("cache") !== "false" // Default to true
 		
 		info(`Setting up Qt ${qtVersion}`)
 		
 		// Run the Qt setup
-		await setupQt(username, password, qtVersion, compiler || undefined, installDeps)
+		await setupQt(username, password, qtVersion, compiler || undefined, installDeps, enableCache)
 	} catch (error) {
 		if (error instanceof Error) {
 			setFailed(error.message)
