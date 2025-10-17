@@ -3,23 +3,23 @@ name: CI
 on: [push, pull_request, workflow_dispatch]
 
 jobs:
-  # test-linux:
-  #   runs-on: ubuntu-latest
-  #   steps:
-  #     - name: Checkout repository
-  #       uses: actions/checkout@v4
+  test-linux:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
 
-  #     - name: Test Setup Qt Action
-  #       uses: ./
-  #       with:
-  #         username: ${{ secrets.QT_USERNAME }}
-  #         password: ${{ secrets.QT_PASSWORD }}
-  #         version: 'qt6.10.0-full'
+      - name: Test Setup Qt Action
+        uses: ./
+        with:
+          username: ${{ secrets.QT_USERNAME }}
+          password: ${{ secrets.QT_PASSWORD }}
+          version: 'qt6.10.0-full'
           
-  #     - name: Verify Qt installation
-  #       run: |
-  #         qmake --version
-  #         which qmake
+      - name: Verify Qt installation
+        run: |
+          qmake --version
+          which qmake
 
   test-linux-arm64:
     runs-on: ubuntu-24.04-arm
@@ -39,85 +39,81 @@ jobs:
           qmake --version
           which qmake
 
-  # test-macos:
-  #   runs-on: macos-latest
-  #   steps:
-  #     - name: Checkout repository
-  #       uses: actions/checkout@v4
+  test-macos:
+    runs-on: macos-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
 
-  #     - name: Test Setup Qt Action
-  #       uses: ./
-  #       with:
-  #         username: ${{ secrets.QT_USERNAME }}
-  #         password: ${{ secrets.QT_PASSWORD }}
-  #         version: 'qt6.10.0-full'
-  #         install-deps: 'true'
+      - name: Test Setup Qt Action
+        uses: ./
+        with:
+          username: ${{ secrets.QT_USERNAME }}
+          password: ${{ secrets.QT_PASSWORD }}
+          version: 'qt6.10.0-full'
+          install-deps: 'true'
           
-  #     - name: Verify Qt installation
-  #       run: |
-  #         qmake --version
-  #         which qmake
+      - name: Verify Qt installation
+        run: |
+          qmake --version
+          which qmake
 
-  # test-windows:
-  #   runs-on: windows-latest
-  #   steps:
-  #     - name: Checkout repository
-  #       uses: actions/checkout@v4
+  test-windows:
+    runs-on: windows-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
         
-  #     - name: Setup MSVC
-  #       uses: TheMrMilchmann/setup-msvc-dev@v4
-  #       with:
-  #         arch: x64
+      - name: Setup MSVC
+        uses: TheMrMilchmann/setup-msvc-dev@v4
+        with:
+          arch: x64
 
-  #     - name: Test Setup Qt Action
-  #       uses: ./
-  #       with:
-  #         username: ${{ secrets.QT_USERNAME }}
-  #         password: ${{ secrets.QT_PASSWORD }}
-  #         version: 'qt.qt6.6100.win64_msvc2022_64'
+      - name: Test Setup Qt Action
+        uses: ./
+        with:
+          username: ${{ secrets.QT_USERNAME }}
+          password: ${{ secrets.QT_PASSWORD }}
+          version: 'qt.qt6.6100.win64_msvc2022_64'
           
-  #     - name: Verify Qt installation
-  #       run: |
-  #         qmake --version
-  #         where qmake
+      - name: Verify Qt installation
+        run: |
+          qmake --version
+          where qmake
 
-  # test-windows-mingw_64:
-  #   runs-on: windows-latest
-  #   steps:
-  #     - name: Checkout repository
-  #       uses: actions/checkout@v4
-        
-  #     - name: Setup MSVC
-  #       uses: TheMrMilchmann/setup-msvc-dev@v4
-  #       with:
-  #         arch: x64
+  test-windows-mingw_64:
+    runs-on: windows-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
 
-  #     - name: Test Setup Qt Action
-  #       uses: ./
-  #       with:
-  #         username: ${{ secrets.QT_USERNAME }}
-  #         password: ${{ secrets.QT_PASSWORD }}
-  #         version: 'qt6.10.0-full'
+      - name: Test Setup Qt Action
+        uses: ./
+        with:
+          username: ${{ secrets.QT_USERNAME }}
+          password: ${{ secrets.QT_PASSWORD }}
+          version: 'qt6.10.0-full'
+          compiler: 'mingw_64'
           
-  #     - name: Verify Qt installation
-  #       run: |
-  #         qmake --version
-  #         where qmake
+      - name: Verify Qt installation
+        run: |
+          qmake --version
+          where qmake
 
-  # test-windows-msvc2022_64:
-  #   runs-on: windows-11-arm
-  #   steps:
-  #     - name: Checkout repository
-  #       uses: actions/checkout@v4
+  test-windows-arm64:
+    runs-on: windows-11-arm
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
 
-  #     - name: Test Setup Qt Action
-  #       uses: ./
-  #       with:
-  #         username: ${{ secrets.QT_USERNAME }}
-  #         password: ${{ secrets.QT_PASSWORD }}
-  #         version: 'qt6.10.0-full'
+      - name: Test Setup Qt Action
+        uses: ./
+        with:
+          username: ${{ secrets.QT_USERNAME }}
+          password: ${{ secrets.QT_PASSWORD }}
+          version: 'qt6.10.0-full'
           
-  #     - name: Verify Qt installation
-  #       run: |
-  #         qmake --version
-  #         where qmake
+      - name: Verify Qt installation
+        run: |
+          qmake --version
+          where qmake
