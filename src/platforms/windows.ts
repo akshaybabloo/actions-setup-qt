@@ -34,7 +34,13 @@ export async function setupDependencies(): Promise<void> {
  * Get the default compiler for Windows
  */
 export function getDefaultCompiler(): string {
-	return "msvc2022_64" // or "msvc2022_arm64" for ARM
+	const arch = process.arch
+	
+	if (arch === "arm64") {
+		return "msvc2022_arm64"
+	}
+	
+	return "msvc2022_64"
 }
 
 /**

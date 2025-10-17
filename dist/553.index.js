@@ -43,7 +43,11 @@ async function setupDependencies() {
  * Get the default compiler for Windows
  */
 function getDefaultCompiler() {
-    return "msvc2022_64"; // or "msvc2022_arm64" for ARM
+    const arch = process.arch;
+    if (arch === "arm64") {
+        return "msvc2022_arm64";
+    }
+    return "msvc2022_64";
 }
 /**
  * Prepare the installer for execution on Windows
