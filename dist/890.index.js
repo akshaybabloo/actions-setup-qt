@@ -68,6 +68,7 @@ async function setupDependencies() {
         "libxkbcommon-dev",
         "libxkbcommon-x11-dev",
         "libxrender-dev",
+        "libpulse-dev",
     ];
     try {
         // Update apt cache

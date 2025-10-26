@@ -158,6 +158,12 @@ export async function setupQt(
 		const cacheKey = getCacheKey(qtVersion, effectiveCompiler)
 		info(`Cache key: ${cacheKey}`)
 		
+		// Install platform-specific dependencies first
+		if (installDeps) {
+			// For other platforms, only install if explicitly requested
+			await platform.setupDependencies()
+		}
+		
 		// Try to restore from cache
 		let cacheRestored = false
 		if (enableCache) {
@@ -170,15 +176,6 @@ export async function setupQt(
 			info("Qt installation restored from cache")
 		} else {
 			info("Qt installation not found in cache, proceeding with installation...")
-			
-			// Install platform-specific dependencies
-			// On Linux, dependencies are required for the installer to run
-			if (process.platform === "linux") {
-				await platform.setupDependencies()
-			} else if (installDeps) {
-				// For other platforms, only install if explicitly requested
-				await platform.setupDependencies()
-			}
 			
 			// Get installer configuration
 			const config = platform.getInstallerConfig()
