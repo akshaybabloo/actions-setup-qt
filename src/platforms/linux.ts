@@ -56,6 +56,7 @@ export async function setupDependencies(): Promise<void> {
 		"libxkbcommon-dev",
 		"libxkbcommon-x11-dev",
 		"libxrender-dev",
+		"libpulse-dev",
 	]
 	
 	try {
