@@ -11,7 +11,7 @@ export declare function downloadInstaller(url: string): Promise<string>;
 /**
  * Run the Qt installer with the specified parameters
  */
-export declare function runInstaller(installerPath: string, username: string, password: string, qtVersion?: string): Promise<void>;
+export declare function runInstaller(installerPath: string, username: string, password: string, qtVersion?: string, qtRoot?: string): Promise<void>;
 /**
  * Generate cache key for Qt installation
  */

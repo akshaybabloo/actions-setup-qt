@@ -121,12 +121,15 @@ export async function setupQt(
 	compiler?: string,
 	installDeps = false,
 	enableCache = true,
+	installDir?: string,
 ): Promise<void> {
 	try {
 		info("Starting Qt setup...")
 		
 		const homeDir = os.homedir()
-		const qtRoot = path.join(homeDir, "Qt")
+		const qtRoot = installDir || path.join(homeDir, "Qt")
+		
+		info(`Qt will be installed to: ${qtRoot}`)
 		
 		// Get platform-specific module
 		const platform = await getPlatformModule()
@@ -174,7 +177,7 @@ export async function setupQt(
 			const executablePath = await platform.prepareInstaller(installerPath)
 			
 			// Run installer
-			await runInstaller(executablePath, username, password, qtVersion)
+			await runInstaller(executablePath, username, password, qtVersion, qtRoot)
 			
 			// Cleanup: Unmount DMG if on macOS
 			if (process.platform === "darwin" && platform.unmountDmg) {

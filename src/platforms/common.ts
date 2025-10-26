@@ -43,12 +43,13 @@ export async function runInstaller(
 	username: string,
 	password: string,
 	qtVersion = "qt6.10.0-full-dev",
+	qtRoot?: string,
 ): Promise<void> {
 	const homeDir = os.homedir()
-	const qtRoot = path.join(homeDir, "Qt")
+	const installRoot = qtRoot || path.join(homeDir, "Qt")
 	
 	info(`Running Qt installer...`)
-	info(`Qt will be installed to: ${qtRoot}`)
+	info(`Qt will be installed to: ${installRoot}`)
 	
 	const args = [
 		"install",
@@ -58,7 +59,7 @@ export async function runInstaller(
 		"--password",
 		password,
 		"--root",
-		qtRoot,
+		installRoot,
 		"--accept-licenses",
 		"--accept-obligations",
 		"--default-answer",

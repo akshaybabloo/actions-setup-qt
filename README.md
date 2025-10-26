@@ -87,6 +87,7 @@ steps:
 | `compiler` | Compiler to use (see [Compilers](#compilers)) | No | Auto-detected |
 | `install-deps` | Install platform-specific dependencies | No | `false` |
 | `cache` | Enable caching of Qt installation | No | `true` |
+| `dir` | Directory to install Qt into | No | Default location |
 
 ## Version Formats
 

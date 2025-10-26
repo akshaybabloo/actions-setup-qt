@@ -23,6 +23,10 @@ inputs:
     description: 'Enable caching of Qt installation (true/false)'
     required: false
     default: 'true'
+  dir:
+    description: 'Directory to install Qt into. If not specified, a default location will be used.'
+    required: false
+    default: ''
 runs:
   using: 'node20'
   main: 'dist/index.js'
