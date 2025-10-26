@@ -190,6 +190,36 @@ To disable caching:
     cache: 'false'
 ```
 
+## Environment Variables
+
+The action automatically exports the following environment variables for use in subsequent workflow steps:
+
+| Variable | Description | Example Value |
+|----------|-------------|---------------|
+| `IQTA_TOOLS` | Path to Qt Tools directory | `~/Qt/Tools` or `C:\Users\user\Qt\Tools` |
+| `QT_ROOT_DIR` | Path to Qt installation for the selected version and compiler | `~/Qt/6.10.0/gcc_64` or `C:\Users\user\Qt\6.10.0\msvc2022_64` |
+| `QT_PLUGIN_PATH` | Path to Qt plugins directory | `~/Qt/6.10.0/gcc_64/plugins` |
+| `QML2_IMPORT_PATH` | Path to QML imports directory | `~/Qt/6.10.0/gcc_64/qml` |
+
+### Using Environment Variables
+
+```yaml
+steps:
+  - name: Setup Qt
+    uses: akshaybabloo/actions-setup-qt@v1
+    with:
+      username: ${{ secrets.QT_USERNAME }}
+      password: ${{ secrets.QT_PASSWORD }}
+      version: 'qt6.10.0-full-dev'
+
+  - name: Use Qt environment variables
+    run: |
+      echo "Qt Tools: $IQTA_TOOLS"
+      echo "Qt Root: $QT_ROOT_DIR"
+      echo "Qt Plugins: $QT_PLUGIN_PATH"
+      echo "QML Imports: $QML2_IMPORT_PATH"
+```
+
 ## Platform-Specific Notes
 
 ### Linux

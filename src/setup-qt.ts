@@ -59,12 +59,9 @@ function extractCompiler(qtVersion: string): string | undefined {
 }
 
 /**
- * Export Qt to PATH
+ * Export Qt to PATH and set Qt environment variables
  */
-async function exportQtPath(version: string, compiler: string): Promise<void> {
-	const homeDir = os.homedir()
-	const qtRoot = path.join(homeDir, "Qt")
-
+async function exportQtPath(version: string, compiler: string, qtRoot: string): Promise<void> {
 	info(`Looking for Qt version ${version} in ${qtRoot}`)
 
 	// Find the actual version directory, e.g., 6.10.0, 6.10, or a variation
@@ -86,7 +83,12 @@ async function exportQtPath(version: string, compiler: string): Promise<void> {
 	const availableCompilers = await fs.readdir(versionPath)
 	info(`Available items in ${actualVersionDir}: ${availableCompilers.join(", ")}`)
 	
-	const qtBinPath = path.join(qtRoot, actualVersionDir, compiler, "bin")
+	// Build paths
+	const qtInstallDir = path.join(qtRoot, actualVersionDir, compiler)
+	const qtBinPath = path.join(qtInstallDir, "bin")
+	const qtToolsPath = path.join(qtRoot, "Tools")
+	const qtPluginPath = path.join(qtInstallDir, "plugins")
+	const qmlImportPath = path.join(qtInstallDir, "qml")
 
 	info(`Looking for Qt bin path: ${qtBinPath}`)
 
@@ -102,7 +104,18 @@ async function exportQtPath(version: string, compiler: string): Promise<void> {
 		const newPath = `${qtBinPath}${path.delimiter}${currentPath}`
 		exportVariable("PATH", newPath)
 
+		// Export Qt-specific environment variables
+		exportVariable("IQTA_TOOLS", qtToolsPath)
+		exportVariable("QT_ROOT_DIR", qtInstallDir)
+		exportVariable("QT_PLUGIN_PATH", qtPluginPath)
+		exportVariable("QML2_IMPORT_PATH", qmlImportPath)
+
 		info("Qt successfully added to PATH")
+		info(`Exported environment variables:`)
+		info(`  IQTA_TOOLS: ${qtToolsPath}`)
+		info(`  QT_ROOT_DIR: ${qtInstallDir}`)
+		info(`  QT_PLUGIN_PATH: ${qtPluginPath}`)
+		info(`  QML2_IMPORT_PATH: ${qmlImportPath}`)
 	} catch (err) {
 		logError(`Failed to add Qt to PATH: ${err}`)
 		logError(`Path does not exist: ${qtBinPath}`)
@@ -206,7 +219,7 @@ export async function setupQt(
 		// Export Qt to PATH
 		const versionNumber = extractVersionNumber(qtVersion)
 		info(`Extracted version number: ${versionNumber} from ${qtVersion}`)
-		await exportQtPath(versionNumber, effectiveCompiler)
+		await exportQtPath(versionNumber, effectiveCompiler, qtRoot)
 		
 		info("Qt setup completed successfully!")
 	} catch (err) {
