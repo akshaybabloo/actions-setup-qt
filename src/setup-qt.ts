@@ -71,9 +71,17 @@ async function installAdditionalModules(
 	info(`Installing additional modules: ${modules}`)
 	
 	// Determine MaintenanceTool path based on platform
-	const isWindows = process.platform === "win32"
-	const maintenanceToolName = isWindows ? "MaintenanceTool.exe" : "MaintenanceTool"
-	const maintenanceToolPath = path.join(qtRoot, maintenanceToolName)
+	let maintenanceToolPath: string
+	
+	if (process.platform === "win32") {
+		maintenanceToolPath = path.join(qtRoot, "MaintenanceTool.exe")
+	} else if (process.platform === "darwin") {
+		// On macOS, MaintenanceTool is an .app bundle
+		maintenanceToolPath = path.join(qtRoot, "MaintenanceTool.app", "Contents", "MacOS", "MaintenanceTool")
+	} else {
+		// Linux and other Unix-like systems
+		maintenanceToolPath = path.join(qtRoot, "MaintenanceTool")
+	}
 	
 	// Check if MaintenanceTool exists
 	try {
