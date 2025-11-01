@@ -11,11 +11,12 @@ async function run(): Promise<void> {
 		const installDeps = getInput("install-deps") === "true"
 		const enableCache = getInput("cache") !== "false" // Default to true
 		const installDir = getInput("dir") || undefined // Optional installation directory
+		const modules = getInput("modules") || undefined // Optional additional modules
 		
 		info(`Setting up Qt ${qtVersion}`)
 		
 		// Run the Qt setup
-		await setupQt(username, password, qtVersion, compiler || undefined, installDeps, enableCache, installDir)
+		await setupQt(username, password, qtVersion, compiler || undefined, installDeps, enableCache, installDir, modules)
 	} catch (error) {
 		if (error instanceof Error) {
 			setFailed(error.message)

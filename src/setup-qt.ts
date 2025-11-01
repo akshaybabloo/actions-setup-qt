@@ -1,5 +1,6 @@
 import { info, error as logError, exportVariable, addPath } from "@actions/core"
 import { restoreCache, saveCache } from "@actions/cache"
+import { exec } from "@actions/exec"
 import { promises as fs } from "node:fs"
 import * as path from "node:path"
 import * as os from "node:os"
@@ -56,6 +57,63 @@ function extractCompiler(qtVersion: string): string | undefined {
 	}
 	
 	return undefined
+}
+
+/**
+ * Install additional modules using MaintenanceTool
+ */
+async function installAdditionalModules(
+	qtRoot: string,
+	username: string,
+	password: string,
+	modules: string,
+): Promise<void> {
+	info(`Installing additional modules: ${modules}`)
+	
+	// Determine MaintenanceTool path based on platform
+	const isWindows = process.platform === "win32"
+	const maintenanceToolName = isWindows ? "MaintenanceTool.exe" : "MaintenanceTool"
+	const maintenanceToolPath = path.join(qtRoot, maintenanceToolName)
+	
+	// Check if MaintenanceTool exists
+	try {
+		await fs.access(maintenanceToolPath)
+	} catch (err) {
+		throw new Error(`MaintenanceTool not found at ${maintenanceToolPath}. Ensure Qt is installed first.`)
+	}
+	
+	// Split modules by comma or space
+	const moduleList = modules.split(/[,\s]+/).filter((m) => m.length > 0)
+	
+	if (moduleList.length === 0) {
+		info("No modules to install")
+		return
+	}
+	
+	// Build arguments for MaintenanceTool
+	const args = [
+		"install",
+		...moduleList,
+		"--email",
+		username,
+		"--password",
+		password,
+		"--accept-licenses",
+		"--accept-obligations",
+		"--default-answer",
+		"--confirm-command",
+		"--auto-answer",
+		"telemetry-question=No",
+	]
+	
+	try {
+		info(`Running MaintenanceTool to install: ${moduleList.join(", ")}`)
+		await exec(maintenanceToolPath, args)
+		info("Additional modules installed successfully")
+	} catch (err) {
+		logError(`Failed to install additional modules: ${err}`)
+		throw err
+	}
 }
 
 /**
@@ -135,6 +193,7 @@ export async function setupQt(
 	installDeps = false,
 	enableCache = true,
 	installDir?: string,
+	modules?: string,
 ): Promise<void> {
 	try {
 		info("Starting Qt setup...")
@@ -211,6 +270,11 @@ export async function setupQt(
 			} else {
 				info("Cache is disabled, skipping cache save")
 			}
+		}
+		
+		// Install additional modules if specified
+		if (modules && modules.trim().length > 0) {
+			await installAdditionalModules(qtRoot, username, password, modules)
 		}
 		
 		// Export Qt to PATH

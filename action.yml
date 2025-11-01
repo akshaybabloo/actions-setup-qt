@@ -27,6 +27,10 @@ inputs:
     description: 'Directory to install Qt into. If not specified, a default location will be used.'
     required: false
     default: ''
+  modules:
+    description: 'Space-separated list of Qt modules to install (e.g. qtbase,qttools). If not specified, all modules will be installed.'
+    required: false
+    default: ''
 runs:
   using: 'node20'
   main: 'dist/index.js'
