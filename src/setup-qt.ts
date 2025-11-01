@@ -265,6 +265,11 @@ export async function setupQt(
 				await platform.unmountDmg(mountPath)
 			}
 			
+			// Install additional modules if specified (before caching)
+			if (modules && modules.trim().length > 0) {
+				await installAdditionalModules(qtRoot, username, password, modules)
+			}
+			
 			// Save to cache
 			if (enableCache) {
 				try {
@@ -278,11 +283,6 @@ export async function setupQt(
 			} else {
 				info("Cache is disabled, skipping cache save")
 			}
-		}
-		
-		// Install additional modules if specified
-		if (modules && modules.trim().length > 0) {
-			await installAdditionalModules(qtRoot, username, password, modules)
 		}
 		
 		// Export Qt to PATH
