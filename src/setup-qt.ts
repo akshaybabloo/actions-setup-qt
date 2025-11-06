@@ -118,9 +118,59 @@ async function installAdditionalModules(
 		info(`Running MaintenanceTool to install: ${moduleList.join(", ")}`)
 		await exec(maintenanceToolPath, args)
 		info("Additional modules installed successfully")
+		
+		// Add Qt Tools to PATH if modules were installed
+		await addQtToolsToPATH(qtRoot, moduleList)
 	} catch (err) {
 		logError(`Failed to install additional modules: ${err}`)
 		throw err
+	}
+}
+
+/**
+ * Add Qt Tools to PATH (e.g., for QtIFW binarycreator)
+ */
+async function addQtToolsToPATH(qtRoot: string, modules: string[]): Promise<void> {
+	const toolsPath = path.join(qtRoot, "Tools")
+	
+	try {
+		await fs.access(toolsPath)
+	} catch (err) {
+		info(`Tools directory not found at ${toolsPath}, skipping PATH addition`)
+		return
+	}
+	
+	// Check if any IFW modules were installed
+	const ifwModules = modules.filter((m) => m.includes("ifw"))
+	
+	if (ifwModules.length > 0) {
+		try {
+			const toolsDirs = await fs.readdir(toolsPath)
+			const ifwDir = toolsDirs.find((dir) => dir.startsWith("QtInstallerFramework"))
+			
+			if (ifwDir) {
+				// QtInstallerFramework has version subdirectories like 4.10, 4.8, etc.
+				const ifwBasePath = path.join(toolsPath, ifwDir)
+				const versionDirs = await fs.readdir(ifwBasePath)
+				
+				// Find the first version directory (should typically be just one)
+				for (const versionDir of versionDirs) {
+					const ifwBinPath = path.join(ifwBasePath, versionDir, "bin")
+					
+					try {
+						await fs.access(ifwBinPath)
+						addPath(ifwBinPath)
+						info(`Added QtInstallerFramework to PATH: ${ifwBinPath}`)
+						break // Only add the first valid bin path found
+					} catch (err) {
+						// Try next version directory
+						continue
+					}
+				}
+			}
+		} catch (err) {
+			info(`Could not read Tools directory: ${err}`)
+		}
 	}
 }
 

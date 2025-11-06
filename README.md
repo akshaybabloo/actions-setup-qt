@@ -7,7 +7,7 @@ A GitHub Action to install Qt using the official Qt online installer. This actio
 
 ## Features
 
-- Supports Linux (x64, ARM64), macOS (x64, ARM64), and Windows (x64, ARM64)
+- Supports Linux (x64, ARM64), macOS (ARM64), and Windows (x64, ARM64)
 - Automatic architecture detection
 - Automatic compiler detection (or manual override)
 - Caching support to speed up subsequent runs
@@ -79,15 +79,15 @@ steps:
 
 ## Inputs
 
-| Input | Description | Required | Default |
-|-------|-------------|----------|---------|
-| `username` | Qt Account username/email | Yes | - |
-| `password` | Qt Account password | Yes | - |
-| `version` | Qt version to install (see [Version Formats](#version-formats)) | No | `qt6.10.0-full-dev` |
-| `compiler` | Compiler to use (see [Compilers](#compilers)) | No | Auto-detected |
-| `install-deps` | Install platform-specific dependencies | No | `false` |
-| `cache` | Enable caching of Qt installation | No | `true` |
-| `dir` | Directory to install Qt into | No | Default location |
+| Input          | Description                                                     | Required | Default             |
+| -------------- | --------------------------------------------------------------- | -------- | ------------------- |
+| `username`     | Qt Account username/email                                       | Yes      | -                   |
+| `password`     | Qt Account password                                             | Yes      | -                   |
+| `version`      | Qt version to install (see [Version Formats](#version-formats)) | No       | `qt6.10.0-full-dev` |
+| `compiler`     | Compiler to use (see [Compilers](#compilers))                   | No       | Auto-detected       |
+| `install-deps` | Install platform-specific dependencies                          | No       | `false`             |
+| `cache`        | Enable caching of Qt installation                               | No       | `true`              |
+| `dir`          | Directory to install Qt into                                    | No       | Default location    |
 
 ## Version Formats
 
@@ -120,12 +120,12 @@ Common package formats:
 The action automatically detects the appropriate compiler based on your platform and architecture:
 
 | Platform | Architecture | Default Compiler |
-|----------|--------------|------------------|
-| Linux | x64 | `gcc_64` |
-| Linux | ARM64 | `gcc_arm64` |
-| macOS | x64/ARM64 | `macos` |
-| Windows | x64 | `msvc2022_64` |
-| Windows | ARM64 | `msvc2022_arm64` |
+| -------- | ------------ | ---------------- |
+| Linux    | x64          | `gcc_64`         |
+| Linux    | ARM64        | `gcc_arm64`      |
+| macOS    | ARM64        | `macos`          |
+| Windows  | x64          | `msvc2022_64`    |
+| Windows  | ARM64        | `msvc2022_arm64` |
 
 ### Compiler Detection Priority
 
@@ -175,7 +175,7 @@ The action determines which compiler to use in the following order:
 By default, the action caches the Qt installation to speed up subsequent workflow runs. The cache key is based on:
 - Qt version
 - Platform (Linux, macOS, Windows)
-- Architecture (x64, ARM64)
+- Architecture (x64 (except macOS), ARM64)
 - Compiler
 
 To disable caching:
@@ -194,12 +194,12 @@ To disable caching:
 
 The action automatically exports the following environment variables for use in subsequent workflow steps:
 
-| Variable | Description | Example Value |
-|----------|-------------|---------------|
-| `IQTA_TOOLS` | Path to Qt Tools directory | `~/Qt/Tools` or `C:\Users\user\Qt\Tools` |
-| `QT_ROOT_DIR` | Path to Qt installation for the selected version and compiler | `~/Qt/6.10.0/gcc_64` or `C:\Users\user\Qt\6.10.0\msvc2022_64` |
-| `QT_PLUGIN_PATH` | Path to Qt plugins directory | `~/Qt/6.10.0/gcc_64/plugins` |
-| `QML2_IMPORT_PATH` | Path to QML imports directory | `~/Qt/6.10.0/gcc_64/qml` |
+| Variable           | Description                                                   | Example Value                                                 |
+| ------------------ | ------------------------------------------------------------- | ------------------------------------------------------------- |
+| `IQTA_TOOLS`       | Path to Qt Tools directory                                    | `~/Qt/Tools` or `C:\Users\user\Qt\Tools`                      |
+| `QT_ROOT_DIR`      | Path to Qt installation for the selected version and compiler | `~/Qt/6.10.0/gcc_64` or `C:\Users\user\Qt\6.10.0\msvc2022_64` |
+| `QT_PLUGIN_PATH`   | Path to Qt plugins directory                                  | `~/Qt/6.10.0/gcc_64/plugins`                                  |
+| `QML2_IMPORT_PATH` | Path to QML imports directory                                 | `~/Qt/6.10.0/gcc_64/qml`                                      |
 
 ### Using Environment Variables
 
