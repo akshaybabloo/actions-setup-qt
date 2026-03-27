@@ -282,6 +282,9 @@ export async function setupQt(
 		// Install platform-specific dependencies
 		// On Linux, dependencies are always installed because the Qt installer itself requires them
 		if (installDeps || process.platform === "linux") {
+			if (!installDeps && process.platform === "linux") {
+				info("Installing Linux dependencies (required for Qt installer to run)")
+			}
 			await platform.setupDependencies()
 		}
 		
