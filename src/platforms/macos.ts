@@ -11,7 +11,7 @@ export function getInstallerConfig(): QtInstallerConfig {
 	debug("Detected macOS platform")
 
 	return {
-		url: "https://download.qt.io/official_releases/online_installers/qt-online-installer-mac-x64-online.dmg",
+		url: "https://download.qt.io/official_releases/online_installers/qt-online-installer-macOS-universal.dmg",
 		needsMount: true,
 	}
 }
