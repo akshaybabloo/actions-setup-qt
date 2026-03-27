@@ -54,7 +54,7 @@ function getDefaultCompiler() {
  */
 async function prepareInstaller(installerPath) {
     // Windows executables don't need special preparation
-    return installerPath;
+    return { executablePath: installerPath };
 }
 
 

@@ -28,7 +28,7 @@ inputs:
     required: false
     default: ''
   modules:
-    description: 'Space-separated list of Qt modules to install (e.g. qtbase,qttools). If not specified, all modules will be installed.'
+    description: 'Comma or space-separated list of Qt modules to install (e.g. qtbase qttools). If not specified, all modules will be installed.'
     required: false
     default: ''
 runs:

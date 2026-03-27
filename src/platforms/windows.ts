@@ -1,5 +1,6 @@
 import { debug, info } from "@actions/core"
 import type { QtInstallerConfig } from "./common.js"
+import type { PreparedInstaller } from "./index.js"
 
 /**
  * Get the appropriate Qt online installer configuration for Windows
@@ -46,7 +47,7 @@ export function getDefaultCompiler(): string {
 /**
  * Prepare the installer for execution on Windows
  */
-export async function prepareInstaller(installerPath: string): Promise<string> {
+export async function prepareInstaller(installerPath: string): Promise<PreparedInstaller> {
 	// Windows executables don't need special preparation
-	return installerPath
+	return { executablePath: installerPath }
 }

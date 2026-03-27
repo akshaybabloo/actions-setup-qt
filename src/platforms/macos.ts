@@ -3,6 +3,7 @@ import { exec } from "@actions/exec"
 import { promises as fs } from "node:fs"
 import * as path from "node:path"
 import type { QtInstallerConfig } from "./common.js"
+import type { PreparedInstaller } from "./index.js"
 
 /**
  * Get the appropriate Qt online installer configuration for macOS
@@ -136,8 +137,8 @@ export function getDefaultCompiler(): string {
  * Prepare the installer for execution on macOS
  * This mounts the DMG and finds the executable
  */
-export async function prepareInstaller(installerPath: string): Promise<string> {
+export async function prepareInstaller(installerPath: string): Promise<PreparedInstaller> {
 	const mountPath = await mountDmg(installerPath)
 	const executablePath = await findMacInstaller(mountPath)
-	return executablePath
+	return { executablePath, mountPath }
 }

@@ -66,6 +66,7 @@ async function setupDependencies() {
         "libxfixes-dev",
         "libxi-dev",
         "libxkbcommon-dev",
+        "libxkbcommon-x11-0",
         "libxkbcommon-x11-dev",
         "libxrender-dev",
         "libpulse-dev",
@@ -98,7 +99,7 @@ function getDefaultCompiler() {
  */
 async function prepareInstaller(installerPath) {
     await (0,_common_js__WEBPACK_IMPORTED_MODULE_2__/* .makeExecutable */ .dF)(installerPath);
-    return installerPath;
+    return { executablePath: installerPath };
 }
 
 
