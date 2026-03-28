@@ -2,7 +2,7 @@ export const id = 890;
 export const ids = [890];
 export const modules = {
 
-/***/ 32890:
+/***/ 2890:
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
 __webpack_require__.r(__webpack_exports__);
@@ -12,11 +12,9 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   prepareInstaller: () => (/* binding */ prepareInstaller),
 /* harmony export */   setupDependencies: () => (/* binding */ setupDependencies)
 /* harmony export */ });
-/* harmony import */ var _actions_core__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(37484);
-/* harmony import */ var _actions_core__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_actions_core__WEBPACK_IMPORTED_MODULE_0__);
-/* harmony import */ var _actions_exec__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(95236);
-/* harmony import */ var _actions_exec__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(_actions_exec__WEBPACK_IMPORTED_MODULE_1__);
-/* harmony import */ var _common_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(92363);
+/* harmony import */ var _actions_core__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(3838);
+/* harmony import */ var _actions_exec__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(5260);
+/* harmony import */ var _common_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(4247);
 
 
 
@@ -25,7 +23,7 @@ __webpack_require__.r(__webpack_exports__);
  */
 function getInstallerConfig() {
     const arch = process.arch;
-    (0,_actions_core__WEBPACK_IMPORTED_MODULE_0__.debug)(`Detected Linux platform, architecture: ${arch}`);
+    (0,_actions_core__WEBPACK_IMPORTED_MODULE_0__/* .debug */ .Yz)(`Detected Linux platform, architecture: ${arch}`);
     if (arch === "arm64") {
         return {
             url: "https://download.qt.io/official_releases/online_installers/qt-online-installer-linux-arm64-online.run",
@@ -41,7 +39,7 @@ function getInstallerConfig() {
  * Install Linux dependencies required for Qt
  */
 async function setupDependencies() {
-    (0,_actions_core__WEBPACK_IMPORTED_MODULE_0__.info)("Installing Linux dependencies...");
+    (0,_actions_core__WEBPACK_IMPORTED_MODULE_0__/* .info */ .pq)("Installing Linux dependencies...");
     const packages = [
         "libfontconfig1-dev",
         "libfreetype-dev",
@@ -73,13 +71,13 @@ async function setupDependencies() {
     ];
     try {
         // Update apt cache
-        await (0,_actions_exec__WEBPACK_IMPORTED_MODULE_1__.exec)("sudo", ["apt-get", "update"]);
+        await (0,_actions_exec__WEBPACK_IMPORTED_MODULE_1__/* .exec */ .m)("sudo", ["apt-get", "update"]);
         // Install packages
-        await (0,_actions_exec__WEBPACK_IMPORTED_MODULE_1__.exec)("sudo", ["apt-get", "install", "-y", ...packages]);
-        (0,_actions_core__WEBPACK_IMPORTED_MODULE_0__.info)("Linux dependencies installed successfully");
+        await (0,_actions_exec__WEBPACK_IMPORTED_MODULE_1__/* .exec */ .m)("sudo", ["apt-get", "install", "-y", ...packages]);
+        (0,_actions_core__WEBPACK_IMPORTED_MODULE_0__/* .info */ .pq)("Linux dependencies installed successfully");
     }
     catch (err) {
-        (0,_actions_core__WEBPACK_IMPORTED_MODULE_0__.error)(`Failed to install Linux dependencies: ${err}`);
+        (0,_actions_core__WEBPACK_IMPORTED_MODULE_0__/* .error */ .z3)(`Failed to install Linux dependencies: ${err}`);
         throw err;
     }
 }
