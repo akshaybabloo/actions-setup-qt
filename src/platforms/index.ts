@@ -3,11 +3,16 @@ import type { QtInstallerConfig } from "./common.js"
 /**
  * Platform-specific module interface
  */
+export interface PreparedInstaller {
+	executablePath: string
+	mountPath?: string
+}
+
 export interface PlatformModule {
 	getInstallerConfig: () => QtInstallerConfig
 	setupDependencies: () => Promise<void>
 	getDefaultCompiler: () => string
-	prepareInstaller: (installerPath: string) => Promise<string>
+	prepareInstaller: (installerPath: string) => Promise<PreparedInstaller>
 	unmountDmg?: (mountPath: string) => Promise<void>
 }
 

@@ -31,7 +31,7 @@ __webpack_require__.r(__webpack_exports__);
 function getInstallerConfig() {
     (0,_actions_core__WEBPACK_IMPORTED_MODULE_0__.debug)("Detected macOS platform");
     return {
-        url: "https://download.qt.io/official_releases/online_installers/qt-online-installer-mac-x64-online.dmg",
+        url: "https://download.qt.io/official_releases/online_installers/qt-online-installer-macOS-universal.dmg",
         needsMount: true,
     };
 }
@@ -141,7 +141,7 @@ function getDefaultCompiler() {
 async function prepareInstaller(installerPath) {
     const mountPath = await mountDmg(installerPath);
     const executablePath = await findMacInstaller(mountPath);
-    return executablePath;
+    return { executablePath, mountPath };
 }
 
 

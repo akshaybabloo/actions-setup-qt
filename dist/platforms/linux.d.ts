@@ -1,4 +1,5 @@
 import type { QtInstallerConfig } from "./common.js";
+import type { PreparedInstaller } from "./index.js";
 /**
  * Get the appropriate Qt online installer configuration for Linux
  */
@@ -15,5 +16,5 @@ export declare function getDefaultCompiler(): string;
  * Prepare the installer for execution on Linux
  * This makes the installer executable
  */
-export declare function prepareInstaller(installerPath: string): Promise<string>;
+export declare function prepareInstaller(installerPath: string): Promise<PreparedInstaller>;
 //# sourceMappingURL=linux.d.ts.map

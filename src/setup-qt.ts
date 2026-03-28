@@ -1,4 +1,4 @@
-import { info, error as logError, exportVariable, addPath } from "@actions/core"
+import { info, error as logError, exportVariable, addPath, setSecret } from "@actions/core"
 import { restoreCache, saveCache } from "@actions/cache"
 import { exec } from "@actions/exec"
 import { promises as fs } from "node:fs"
@@ -20,9 +20,9 @@ function extractVersionNumber(qtVersion: string): string {
 			if (versionNum.length === 4) {
 				return `${versionNum[0]}.${versionNum.substring(1, 3)}.${versionNum[3]}`
 			}
-			// Convert 610 to 6.10.0
+			// Convert 680 to 6.8.0
 			if (versionNum.length === 3) {
-				return `${versionNum[0]}.${versionNum.substring(1, 3)}.0`
+				return `${versionNum[0]}.${versionNum[1]}.${versionNum[2]}`
 			}
 		}
 	}
@@ -32,8 +32,8 @@ function extractVersionNumber(qtVersion: string): string {
 		const versionParts = qtVersion.replace(/^qt/, "").split("-")
 		return versionParts[0] ?? qtVersion
 	}
-	
-	return qtVersion
+
+	throw new Error(`Unrecognized Qt version format: ${qtVersion}`)
 }
 
 /**
@@ -181,12 +181,14 @@ async function exportQtPath(version: string, compiler: string, qtRoot: string): 
 	info(`Looking for Qt version ${version} in ${qtRoot}`)
 
 	// Find the actual version directory, e.g., 6.10.0, 6.10, or a variation
-	const majorVersion = version.split(".").slice(0, 2).join(".") // e.g., "6.10"
+	const majorMinor = version.split(".").slice(0, 2).join(".") // e.g., "6.10"
 	const qtVersionDirs = await fs.readdir(qtRoot)
 	info(`Available Qt directories: ${qtVersionDirs.join(", ")}`)
-	info(`Looking for directory starting with: ${majorVersion}`)
-	
-	const actualVersionDir = qtVersionDirs.find((dir) => dir.startsWith(majorVersion))
+	info(`Looking for directory matching: ${version} (or prefix ${majorMinor})`)
+
+	// Prefer exact match, fall back to major.minor prefix match
+	const actualVersionDir = qtVersionDirs.find((dir) => dir === version)
+		?? qtVersionDirs.find((dir) => dir.startsWith(`${majorMinor}.`))
 
 	if (!actualVersionDir) {
 		throw new Error(`Could not find Qt installation directory for version ${version} in ${qtRoot}. Available directories: ${qtVersionDirs.join(", ")}`)
@@ -255,7 +257,9 @@ export async function setupQt(
 ): Promise<void> {
 	try {
 		info("Starting Qt setup...")
-		
+
+		setSecret(password)
+
 		const homeDir = os.homedir()
 		const qtRoot = installDir || path.join(homeDir, "Qt")
 		
@@ -275,9 +279,12 @@ export async function setupQt(
 		const cacheKey = getCacheKey(qtVersion, effectiveCompiler)
 		info(`Cache key: ${cacheKey}`)
 		
-		// Install platform-specific dependencies first
-		if (installDeps) {
-			// For other platforms, only install if explicitly requested
+		// Install platform-specific dependencies
+		// On Linux, dependencies are always installed because the Qt installer itself requires them
+		if (installDeps || process.platform === "linux") {
+			if (!installDeps && process.platform === "linux") {
+				info("Installing Linux dependencies (required for Qt installer to run)")
+			}
 			await platform.setupDependencies()
 		}
 		
@@ -299,20 +306,16 @@ export async function setupQt(
 			
 			// Download installer
 			const installerPath = await downloadInstaller(config.url)
-			
+
 			// Prepare installer for execution (platform-specific)
-			const executablePath = await platform.prepareInstaller(installerPath)
-			
+			const prepared = await platform.prepareInstaller(installerPath)
+
 			// Run installer
-			await runInstaller(executablePath, username, password, qtVersion, qtRoot)
-			
+			await runInstaller(prepared.executablePath, username, password, qtVersion, qtRoot)
+
 			// Cleanup: Unmount DMG if on macOS
-			if (process.platform === "darwin" && platform.unmountDmg) {
-				// We need to extract the mount path from the executable path
-				// Executable path is like: /Volumes/qt-unified-macOS/Qt Unified.app/Contents/MacOS/qt-unified-macOS
-				// Mount path is: /Volumes/qt-unified-macOS
-				const mountPath = executablePath.split("/").slice(0, 3).join("/")
-				await platform.unmountDmg(mountPath)
+			if (prepared.mountPath && platform.unmountDmg) {
+				await platform.unmountDmg(prepared.mountPath)
 			}
 			
 			// Install additional modules if specified (before caching)

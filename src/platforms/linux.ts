@@ -2,6 +2,7 @@ import { debug, info, error as logError } from "@actions/core"
 import { exec } from "@actions/exec"
 import { makeExecutable } from "./common.js"
 import type { QtInstallerConfig } from "./common.js"
+import type { PreparedInstaller } from "./index.js"
 
 /**
  * Get the appropriate Qt online installer configuration for Linux
@@ -54,6 +55,7 @@ export async function setupDependencies(): Promise<void> {
 		"libxfixes-dev",
 		"libxi-dev",
 		"libxkbcommon-dev",
+		"libxkbcommon-x11-0",
 		"libxkbcommon-x11-dev",
 		"libxrender-dev",
 		"libpulse-dev",
@@ -90,7 +92,7 @@ export function getDefaultCompiler(): string {
  * Prepare the installer for execution on Linux
  * This makes the installer executable
  */
-export async function prepareInstaller(installerPath: string): Promise<string> {
+export async function prepareInstaller(installerPath: string): Promise<PreparedInstaller> {
 	await makeExecutable(installerPath)
-	return installerPath
+	return { executablePath: installerPath }
 }
