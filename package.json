@@ -33,6 +33,6 @@
 	"dependencies": {
 		"@actions/cache": "^4.1.0",
 		"@actions/core": "^1.11.1",
-		"@actions/tool-cache": "^2.0.2"
+		"@actions/tool-cache": "^4.0.0"
 	}
 }
