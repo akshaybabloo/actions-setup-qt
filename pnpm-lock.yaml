@@ -31,6 +31,8 @@ importers:
         specifier: ^6.0.0
         version: 6.0.3
 
+  dist: {}
+
 packages:
 
   '@actions/cache@6.0.0':
@@ -257,8 +259,8 @@ packages:
   undici-types@7.16.0:
     resolution: {integrity: sha512-Zz+aZWSj8LE6zoxD+xrjh4VfkIG8Ya6LvYkZqtUQGJPZjYl53ypCaUwWqo7eI0x66KBGeRo+mlBEkMSeSZ38Nw==}
 
-  undici@6.25.0:
-    resolution: {integrity: sha512-ZgpWDC5gmNiuY9CnLVXEH8rl50xhRCuLNA97fAUnKi8RRuV4E6KG31pDTsLVUKnohJE0I3XDrTeEydAXRw47xg==}
+  undici@6.29.1:
+    resolution: {integrity: sha512-EvRlUt/QqAEvXdQeRMYUfwOQsfzpDztykrG2owGEE/rBOBoYv9uF39ZzsNDh4lTFHhTr2XOZjKkYgueD12ZmGA==}
     engines: {node: '>=18.17'}
 
 snapshots:
@@ -294,7 +296,7 @@ snapshots:
   '@actions/http-client@4.0.0':
     dependencies:
       tunnel: 0.0.6
-      undici: 6.25.0
+      undici: 6.29.1
 
   '@actions/io@3.0.2': {}
 
@@ -535,4 +537,4 @@ snapshots:
 
   undici-types@7.16.0: {}
 
-  undici@6.25.0: {}
+  undici@6.29.1: {}
